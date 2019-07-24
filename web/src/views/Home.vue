@@ -90,6 +90,12 @@ export default {
   name: 'home',
   components: {
     HelloWorld
+  },
+  mounted() {
+    const userid = localStorage.getItem('userid.night.xtzero.me')
+    if (!userid) {
+      this.$router.push('/login')
+    }
   }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <el-container class="container">
+    <el-container class="container" v-if="is_login">
       <el-header style="height: 0px;"></el-header>
       <el-main class="body">
         <router-view/>
@@ -19,6 +19,7 @@
         </span>
       </el-footer>
     </el-container>
+    <router-view v-else/>
   </div>
 </template>
 
@@ -27,6 +28,12 @@ export default {
   name: 'app',
   components: {
 
+  },
+  computed: {
+    is_login() {
+      const userid = localStorage.getItem('userid.night.xtzero.me')
+      return userid
+    }
   }
 }
 </script>

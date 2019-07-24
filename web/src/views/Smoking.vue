@@ -14,7 +14,7 @@
   </div>
 </template>
 <style>
-  *{
+  .about{
     color: white;
   }
 </style>
