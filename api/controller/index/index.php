@@ -55,7 +55,7 @@ class index extends coreController {
             'password' => $this->password,
             'valid' => 1
         ])->query();
-        if ($addUser) {
+        if ($addUser === '0') {
             ajax(200, '成功', [
                 'id' => $id,
                 'name' => $this->name
