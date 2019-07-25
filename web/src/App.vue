@@ -31,8 +31,12 @@ export default {
   },
   computed: {
     is_login() {
-      const userid = localStorage.getItem('userid.night.xtzero.me')
-      return userid
+      const userid = this.$store.state.user.id
+      if (userid) {
+        return true
+      } else {
+        return false
+      }
     }
   }
 }
