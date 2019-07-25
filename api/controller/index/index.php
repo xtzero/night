@@ -13,6 +13,7 @@ class index extends coreController {
 
     public function __construct()
     {
+        crossDomain();
         $this->m = new coreModel();
     }
 
