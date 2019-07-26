@@ -38,8 +38,8 @@ export default {
     },
     mounted(){
       document.title = '欢迎加入！'
-        const userid = this.$store.state.user.id
-        if (!userid) {
+        const userid = localStorage.getItem('userid.night.xtzero.me')
+        if (userid) {
             this.$router.push('/')
         }
     },

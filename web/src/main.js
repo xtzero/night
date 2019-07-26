@@ -40,3 +40,9 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
+
+router.beforeEach(async(to, from, next) => {
+  // set page title
+  document.title = to.meta
+  next()
+})
