@@ -100,11 +100,12 @@ class index extends coreController {
                     ->where("valid=1")
                     ->page($this->page)
                     ->limit(10)
+                    ->order('create_at DESC')
                     ->query();
         if (!empty($moments)) {
             $_userids = array_column($moments, 'create_user');
             $userids = "'".implode("','", $_userids)."'";
-            $users = $this->m->table(self::user)->mode('select')->where("id IN ({$userids})")->order('create_at DESC')->query();
+            $users = $this->m->table(self::user)->mode('select')->where("id IN ({$userids})")->query();
             $useridToUser = keyToIndex($users, 'id');
             foreach ($moments as $k => $v) {
                 $moments[$k]['name'] = $useridToUser[$v['create_user']]['name']??'';

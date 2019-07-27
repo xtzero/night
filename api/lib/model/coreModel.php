@@ -152,8 +152,13 @@ class coreModel{
                             return ' ';
                         }
                     })($this->_group)).((function($o){
+
                         if (!empty($o)) {
-                            return 'ORDER BY '.implode(',', $o).' ';
+                            if (is_string($o)) {
+                                return "ORDER BY {$o} ";
+                            } else {
+                                return 'ORDER BY '.implode(',', $o).' ';
+                            }
                         } else {
                             return ' ';
                         }
