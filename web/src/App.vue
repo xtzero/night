@@ -29,6 +29,10 @@ export default {
   components: {
 
   },
+  mounted(){
+    this.$checkUser()
+    this.$router.push('/login')
+  },
   computed: {
     is_login() {
       const userid = this.$store.state.user.id

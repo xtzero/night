@@ -40,6 +40,7 @@
       title="想要表态"
       :visible.sync="send.display"
       width="100%"
+      v-loading="send.loading"
     >
       <el-form>
         <el-form-item label-width="0">
@@ -77,6 +78,7 @@
         page: 1,
         nomore: false,
         send: {
+          loading: false,
           display: false,
           data: {
             content: ''
@@ -136,12 +138,15 @@
         this.getMomentList()
       },
       sendMoment() {
-        console.log(this.send.data)
+        this.screenLoading = true
         this.$utils.ajax('sendMoment', {
           userid: this.$store.state.user.id,
           content: this.send.data.content
         }).then((res) => {
-
+          this.screenLoading = false
+          this.send.data.content = ''
+          this.send.display = false
+          this.reload()
         })
       }
     },

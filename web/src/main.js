@@ -15,7 +15,6 @@ Vue.prototype.$utils = utils
 Vue.prototype.$checkUser = function() {
   const userid = localStorage.getItem('userid.night.xtzero.me')
   const name = localStorage.getItem('name.night.xtzero.me')
-  console.log(userid)
   if (!userid) {
     this.$router.push('/login')
   } else {

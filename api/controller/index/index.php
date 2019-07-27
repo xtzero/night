@@ -93,12 +93,17 @@ class index extends coreController {
      */
     public function listMoment()
     {
-        $this->param('*page=1');
+        $this->param('*page=1,*userid');
         $moments = $this->m
                     ->table(self::moment)
-                    ->mode('select')
-                    ->where("valid=1")
-                    ->page($this->page)
+                    ->mode('select');
+        if ($_userid = $this->userid) {
+            $this->m->where("valid=1 AND create_user='{$_userid}'");
+        } else {
+            $this->m->where("valid=1");
+        }
+
+        $moments = $moments->page($this->page)
                     ->limit(10)
                     ->order('create_at DESC')
                     ->query();
