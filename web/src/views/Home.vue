@@ -138,6 +138,7 @@
         this.getMomentList()
       },
       sendMoment() {
+        // 帖子要不要存话题啊？
         this.screenLoading = true
         this.$utils.ajax('sendMoment', {
           userid: this.$store.state.user.id,
