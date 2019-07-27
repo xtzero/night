@@ -121,6 +121,22 @@ class index extends coreController {
         }
     }
 
+    public function momentCount()
+    {
+        $this->param('userid');
+        $c = $this->m
+            ->table(self::moment)
+            ->mode('select')
+            ->field('COUNT(*) AS \'count\'')
+            ->where("valid=1 AND create_user='{$this->userid}'")
+            ->find();
+        if (!empty($c)) {
+            ajax(200, '', $c);
+        } else {
+            ajax(200, '', 0);
+        }
+    }
+
     /**
      * 发送评论
      * @throws \Exception
