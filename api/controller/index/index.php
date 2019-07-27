@@ -104,7 +104,7 @@ class index extends coreController {
         if (!empty($moments)) {
             $_userids = array_column($moments, 'create_user');
             $userids = "'".implode("','", $_userids)."'";
-            $users = $this->m->table(self::user)->mode('select')->where("id IN ({$userids})")->order('create_at DESC')>query();
+            $users = $this->m->table(self::user)->mode('select')->where("id IN ({$userids})")->order('create_at DESC')->query();
             $useridToUser = keyToIndex($users, 'id');
             foreach ($moments as $k => $v) {
                 $moments[$k]['name'] = $useridToUser[$v['create_user']]['name']??'';
