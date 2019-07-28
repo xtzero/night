@@ -1,5 +1,12 @@
 <template>
   <div class="about">
+    <el-card :body-style="{ padding: '0px' }">
+      <el-image
+        class="image"
+        :src="'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png'"
+        :fit="'cover'">
+      </el-image>
+    </el-card>
     <h1>吸烟区还未开放</h1>
     <br><br>
     <p>这里还没想好要放什么</p>
@@ -16,5 +23,11 @@
 <style>
   .about{
     color: white;
+  }
+
+  .image {
+    width: 100%;
+    display: block;
+    height: 150px;
   }
 </style>
