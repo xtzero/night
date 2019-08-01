@@ -9,14 +9,17 @@
         <el-button icon="el-icon-edit" type="primary" circle @click="send.display=true"></el-button>
       </el-col>
     </el-card>
-    <el-card class="box-card" v-for="v in list">
+    <el-card
+        class="box-card"
+        v-for="v in list"
+    >
       <div>
         {{ v.content }}
       </div>
       <p class="time">
         {{ v.name }} 于 {{ formatTime(v.create_at)}} 发送
         <br/>
-        <span class="el-icon-chat-dot-round">{{ v.c_count ? v.c_count : 0 }}</span>
+        <span class="el-icon-chat-dot-round" @click="showDetail(v)">{{ v.c_count ? v.c_count : 0 }}</span>
         <el-divider direction="vertical"></el-divider>
         <span class="el-icon-sunny">{{ v.star ? v.star : 0 }}</span>
         <el-divider direction="vertical"></el-divider>
@@ -64,13 +67,15 @@
         <el-button type="primary" @click="sendMoment" :disabled="sendTotalCount>30">表态！</el-button>
       </div>
     </el-dialog>
+    <MomentDetail :screen-display="detail.display" :moment-id="detail.momentId"></MomentDetail>
   </div>
 </template>
 
 <script>
+  import MomentDetail from '@/views/MomentDetail.vue'
   export default {
     name: 'home',
-    components: {},
+    components: { MomentDetail },
     data() {
       return {
         screenLoading: false,
@@ -83,6 +88,10 @@
           data: {
             content: ''
           }
+        },
+        detail: {
+         display: true,
+         momentId: false
         }
       }
     },
@@ -149,6 +158,11 @@
           this.send.display = false
           this.reload()
         })
+      },
+      showDetail(v) {
+        console.log(v)
+        this.detail.display = true
+        this.detail.momentId = v.id
       }
     },
     computed: {

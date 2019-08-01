@@ -1,23 +1,20 @@
 <template>
   <div class="about">
-    <el-card :body-style="{ padding: '0px' }">
+    <h1>
+      <i class="el-icon-smoking"></i>
+      吸烟区
+    </h1>
+    <p>我们希望吸烟区能带给来访者更多的意外。</p>
+    <el-card :body-style="{ padding: '0px' }" class="smoking-card">
       <el-image
         class="image"
         :src="'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png'"
         :fit="'cover'">
       </el-image>
+      <div class="card-mask">
+        玩家守则
+      </div>
     </el-card>
-    <h1>吸烟区还未开放</h1>
-    <br><br>
-    <p>这里还没想好要放什么</p>
-    <p>就先放这个站的说明吧</p>
-    <br>
-    <p>这是一个不定期开放的树洞</p>
-    <p>每次进入的时候，你都有可能获得一个新的身份</p>
-    <p>你可以在这里发送任何内容，只要在30字以内</p>
-    <p>我们提倡高质量的内容，或者是来自灵魂的文字</p>
-    <br>
-    <p>祝你快乐</p>
   </div>
 </template>
 <style>
@@ -29,5 +26,24 @@
     width: 100%;
     display: block;
     height: 150px;
+    border-style: none;
+  }
+
+  .smoking-card{
+    position: relative;
+  }
+  .card-mask{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 30px;
   }
 </style>
