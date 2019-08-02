@@ -174,7 +174,7 @@ class index extends coreController {
         $momentDetail = $this->m
                             ->table(self::moment)
                             ->mode('select')
-                            ->field('content,create_user,create_at')
+                            ->field('content,create_user,create_at,star,shit')
                             ->where("id={$this->mid} AND valid=1")
                             ->find();
         if (!empty($momentDetail)) {
