@@ -10,5 +10,6 @@ return [
     'sendMoment' => 'index/index/sendMoment',
     'listMoment' => 'index/index/listMoment',
     'sendComment' => 'index/index/sendComment',
-    'momentDetail' => 'index/index/momentDetail'
+    'momentDetail' => 'index/index/momentDetail',
+    'starOrShit' => 'index/index/starOrShit'
 ];

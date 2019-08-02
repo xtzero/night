@@ -3,6 +3,7 @@ namespace controller\index;
 
 use core\coreController;
 use lib\coreModel;
+use lib\db;
 
 class index extends coreController {
 
@@ -200,5 +201,25 @@ class index extends coreController {
         } else {
             ajax(400, '这个帖子不存在');
         }
+    }
+
+    /**
+     * 点赞点踩
+     * @throws \Exception
+     */
+    public function starOrShit()
+    {
+        $this->param('mid,sos');
+        if (in_array($this->sos, ['star', 'shit'])) {
+            $res = db::init()->query("update ".self::moment." set {$this->sos}={$this->sos}+1 where id={$this->mid}");
+            if ($res) {
+                ajax(200, '成功');
+            } else {
+                ajax(401, '操作失败');
+            }
+        } else {
+            ajax(400, '点赞还是点踩？');
+        }
+
     }
 }
