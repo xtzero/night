@@ -178,7 +178,7 @@ class index extends coreController {
                             ->where("id={$this->mid} AND valid=1")
                             ->find();
         if (!empty($momentDetail)) {
-            $user = $users = $this->m->table(self::user)->mode('select')->where("id={$momentDetail['create_user']}")->find();
+            $user = $this->m->table(self::user)->mode('select')->where("id='{$momentDetail['create_user']}'")->find();
             $momentDetail['name'] = $user['name']??'';
             $comments = $this->m
                             ->table(self::comment)

@@ -234,18 +234,22 @@ class coreModel{
             error('没有指定表');
         }
 
-        if ($this->_mode == 'select') {
-            $dbRes = db::init()->query($this->_sql, true);
-        } else if ($this->_mode == 'insert') {
-            $dbRes = db::init()->query($this->_sql);
-            if ($dbRes) {
-                $insertRes = db::init()->query('SELECT LAST_INSERT_ID();', true);
-                return $insertRes[0]['LAST_INSERT_ID()'];
-            } else {
-                return false;
+        try {
+            if ($this->_mode == 'select') {
+                $dbRes = db::init()->query($this->_sql, true);
+            } else if ($this->_mode == 'insert') {
+                $dbRes = db::init()->query($this->_sql);
+                if ($dbRes) {
+                    $insertRes = db::init()->query('SELECT LAST_INSERT_ID();', true);
+                    return $insertRes[0]['LAST_INSERT_ID()'];
+                } else {
+                    return false;
+                }
+            } else{
+                $dbRes = db::init()->query($this->_sql);
             }
-        } else{
-            $dbRes = db::init()->query($this->_sql);
+        } catch(\Exception $e) {
+            ajax(500, 'sql exec error', $e);
         }
 
         return $dbRes;
