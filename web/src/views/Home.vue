@@ -10,22 +10,20 @@
       </el-col>
     </el-card>
     <el-card
-        class="box-card"
-        v-for="v in list"
+      class="box-card"
+      v-for="v in list"
     >
-      <div>
+      <div @click="showDetail(v)">
         {{ v.content }}
       </div>
-      <p class="time">
+      <p class="time" @click="showDetail(v)">
         {{ v.name }} 于 {{ formatTime(v.create_at)}} 发送
         <br/>
-        <span class="el-icon-chat-dot-round" @click="showDetail(v)">{{ v.c_count ? v.c_count : 0 }}</span>
+        <span class="el-icon-chat-dot-round">{{ v.c_count ? v.c_count : 0 }}</span>
         <el-divider direction="vertical"></el-divider>
         <span class="el-icon-sunny">{{ v.star ? v.star : 0 }}</span>
         <el-divider direction="vertical"></el-divider>
         <span class="el-icon-heavy-rain">{{ v.shit ? v.shit : 0 }}</span>
-        <!--        <el-divider direction="vertical"></el-divider>-->
-        <!--        <span class="el-icon-view">135</span>-->
       </p>
     </el-card>
     <el-card class="box-card" style="text-align: center; font-size: 13px;padding: 0;" v-show="!nomore">
@@ -67,15 +65,52 @@
         <el-button type="primary" @click="sendMoment" :disabled="sendTotalCount>30">表态！</el-button>
       </div>
     </el-dialog>
-    <MomentDetail :screen-display="detail.display" :moment-id="detail.momentId"></MomentDetail>
+
+    <!--详情弹层-->
+    <el-dialog
+      :visible.sync="detail.display"
+      :fullscreen="true"
+      v-loading="detail.loading"
+    >
+      <h3><i class="el-icon-sugar" style="font-size: 20px;"></i> {{detail.data.name}} 说：</h3>
+      <span class="detail-content">{{detail.data.content}}</span>
+      <p class="time" style="margin-bottom: 30px;">{{detail.data.create_at}}</p>
+<!--      <el-row style="display: flex;justify-content: center;align-items: center">-->
+<!--        <el-button type="primary" icon="el-icon-sunny" circle></el-button>-->
+<!--        <el-button type="primary" icon="el-icon-heavy-rain" circle></el-button>-->
+<!--      </el-row>-->
+      <div class="block">
+        <el-slider
+          v-model="value"
+          range
+          :show-tooltip="false"
+          
+        >
+        </el-slider>
+      </div>
+      <el-divider class="others-say-divider" v-if="hasComments">其他人说</el-divider>
+      <el-divider class="others-say-divider" v-else>其他人啥都没说</el-divider>
+      <el-card class="detail-box-card">
+        <div class="text item" style="text-align: center;">
+          <span class="el-icon-thumb" v-if="hasComments"> 加入 「其他人」</span>
+          <span class="el-icon-thumb" v-else> 我先说点啥</span>
+        </div>
+      </el-card>
+      <el-card class="detail-box-card" v-for="v in detail.data.comments" v-show="hasComments">
+        <span>{{v.name}} :</span>
+        <div class="text item">
+          {{v.content}}
+        </div>
+      </el-card>
+      <el-divider class="others-say-divider" v-if="hasComments">其他人说完了</el-divider>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-  import MomentDetail from '@/views/MomentDetail.vue'
   export default {
     name: 'home',
-    components: { MomentDetail },
+    components: {},
     data() {
       return {
         screenLoading: false,
@@ -90,8 +125,11 @@
           }
         },
         detail: {
-         display: true,
-         momentId: false
+          loading: false,
+          display: false,
+          data: {
+            comments: []
+          }
         }
       }
     },
@@ -160,14 +198,30 @@
         })
       },
       showDetail(v) {
-        console.log(v)
-        this.detail.display = true
-        this.detail.momentId = v.id
+        this.screenLoading = true
+        this.$utils.ajax('momentDetail', {
+          'mid': v.id
+        }).then((res) => {
+          this.screenLoading = false
+          if (res.data.code === 200) {
+            this.detail.display = true
+            this.detail.data = res.data.data
+            console.log(this.detail.data)
+          } else {
+            this.$message({
+              type: 'error',
+              message: res.data.msg
+            })
+          }
+        })
       }
     },
     computed: {
       sendTotalCount() {
         return this.send.data.content.length
+      },
+      hasComments() {
+        return this.detail.data.comments.length > 0 ? true : false
       }
     }
   }
@@ -204,5 +258,18 @@
     justify-content: center;
     align-items: center;
     margin-top: 5px;
+  }
+
+  .detail-box-card{
+    margin: 5px 0;
+  }
+
+  .detail-content{
+    font-size: 20px;
+    font-weight: 500;
+  }
+
+  .others-say-divider{
+    margin: 50px 0;
   }
 </style>
