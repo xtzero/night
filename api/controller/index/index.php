@@ -154,9 +154,7 @@ class index extends coreController {
         ])->query();
         if ($send) {
             // 更新评论数
-            $updateCcount = $this->m->table(self::moment)->mode('update')->data([
-                'c_count' => 'c_count+1'
-            ]);
+            $updateCcount = db::init()->query("update ".self::moment." set c_count=c_count+1 where id={$this->mid};");
             ajax(200, '成功', [
                 'id' => $send
             ]);
