@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-const apiPre = 'http://nightapi.xtzero.me/index.php/'
+// const apiPre = 'http://nightapi.xtzero.me/index.php/'
+const apiPre = 'http://localhost:1187/index.php/'
 export function ajax(url, params) {
     let _url = []
     for(const i in params) {

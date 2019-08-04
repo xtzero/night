@@ -67,14 +67,14 @@ export default {
                 } else {
                     this.$message({
                         type: 'error',
-                        messgae: res.data.msg
+                        message: res.data.msg
                     })
                 }
             }).catch((e) => {
                 this.screenLoading = false
                 this.$message({
                     type: 'error',
-                    messgae: '登录时出现了问题'
+                    message: '登录时出现了问题'
                 })
                 console.log(e)
             })

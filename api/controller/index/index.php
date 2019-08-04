@@ -29,7 +29,7 @@ class index extends coreController {
     public function checkUser()
     {
         $this->param('userid');
-        $user = $this->m->table(self::user)->mode('select')->where("id='{$this->userid}'")->field('*')->find();
+        $user = $this->m->table(self::user)->mode('select')->where("id='{$this->userid}' AND valid=1")->field('*')->find();
         if (!empty($user)) {
             ajax(200, '用户存在', $user);
         } else {
@@ -44,7 +44,7 @@ class index extends coreController {
     public function addUser()
     {
         $this->param('name,password');
-        $ifUserExist = $this->m->table(self::user)->mode('select')->where("name='{$this->name}'")->find();
+        $ifUserExist = $this->m->table(self::user)->mode('select')->where("name='{$this->name}' AND valid=1")->find();
         if (!empty($ifUserExist)) {
             ajax(400, '这个名字已经被占用了呢');
         }
@@ -218,6 +218,39 @@ class index extends coreController {
         } else {
             ajax(400, '点赞还是点踩？');
         }
+    }
 
+    /**
+     * 重生
+     * @throws \Exception
+     */
+    public function returnBefore()
+    {
+        $this->param('userid,name,password');
+        $userinfo = db::init()->query("select * from night_user where name='{$this->name}' AND password='{$this->password}' AND valid=1;", true);
+        if (!empty($userinfo)) {
+            $userinfo = $userinfo[0];
+            db::init()->query("update night_moment set create_user='{$this->userid}' where create_user='{$userinfo['id']}';");
+            db::init()->query("update night_comment set create_user='{$this->userid}' where create_user='{$userinfo['id']}';");
+            db::init()->query("update night_user set password='',valid=0 where id='{$userinfo['id']}';");
+            ajax(200, '成功');
+        } else {
+            ajax(400, '哎呀，好像这个重生口令不存在呢');
+        }
+    }
+
+    /**
+     * 转世，清除用户信息
+     * @throws \Exception
+     */
+    public function reborn()
+    {
+        $this->param('userid');
+        $res = db::init()->query("update night_user set valid=0,password='' where id='{$this->userid}';");
+        if ($res) {
+            ajax(200, '成功');
+        } else {
+            ajax(400, '重置用户状态失败，请稍后重试');
+        }
     }
 }

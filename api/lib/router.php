@@ -11,5 +11,7 @@ return [
     'listMoment' => 'index/index/listMoment',
     'sendComment' => 'index/index/sendComment',
     'momentDetail' => 'index/index/momentDetail',
-    'starOrShit' => 'index/index/starOrShit'
+    'starOrShit' => 'index/index/starOrShit',
+    'returnBefore' => 'index/index/returnBefore',
+    'reborn' => 'index/index/reborn'
 ];

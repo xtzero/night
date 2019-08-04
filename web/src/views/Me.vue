@@ -9,7 +9,8 @@
 			</p>
 			<el-divider></el-divider>
 			<p class="time card-bottom">
-				<i class="el-icon-cold-drink" @click="showReturnBeforeDialog"> 重生</i>
+				<i class="el-icon-cold-drink" @click="showReturnBeforeDialog" v-if="canReturnBefore"> 重生</i>
+				<i class="el-icon-cold-drink" v-else> 重生已经被禁用</i>
 				<span style="margin-left: 20px;"></span>
 				<i class="el-icon-moon-night" @click="showRebornDialog"> 转世</i>
 			</p>
@@ -49,8 +50,9 @@
 		>
 			<span>
 				<p>转世之后会重置当前登录状态，并且你将永远失去当前身份。</p>
-				<p>你将会失去当前的全部数据，并使重生口令失效。</p>
-				<p>你可以就此重新开始。</p>
+				<p>你将会失去当前的全部数据。</p>
+				<p>如果你在加入的时候设置了重生口令，则可以使用重生口令重新回来。</p>
+				<p>或者，你可以就此重新开始。</p>
 				<p>如果决定了，请点击确定。</p>
 			</span>
 			<span slot="footer" class="dialog-footer">
@@ -62,14 +64,22 @@
 				title="重生"
 				:visible.sync="returnBefore.display"
 				width="80%"
+				v-loading="returnBefore.loading"
 		>
 			<span>
 				<p>输入登录时预设的重生口令，你可以将之前账号的数据完全同步过来。</p>
 				<p>将会参与同步的数据有：帖子、评论</p>
-				<p>如果决定好了，请告诉我你的重生口令...</p>
+				<p>如果决定好了，请告诉我你之前的名字和重生口令...</p>
 				<el-input
+						v-model="returnBefore.name"
+						placeholder="你之前的名字是什么？"
+						size="mini"
+				/>
+				<el-input
+						style="margin-top: 5px;"
 						v-model="returnBefore.password"
 						placeholder="安巴尼妈咪哄"
+						size="mini"
 				/>
 			</span>
 			<span slot="footer" class="dialog-footer">
@@ -98,8 +108,11 @@
                 },
                 returnBefore: {
                     display: false,
-	                password: ''
-                }
+	                name: '',
+	                password: '',
+                    loading: false
+                },
+	            canReturnBefore: true
             }
         },
         mounted() {
@@ -107,6 +120,7 @@
             this.me.name = this.$store.state.user.name
             this.getMomentCount()
             this.getMomentList()
+	        this.canReturnBefore = localStorage.getItem('canreturnbefore.night.xtzero.me') == 1 ? false : true
         },
         methods: {
             getMomentCount() {
@@ -175,10 +189,73 @@
                 this.returnBefore.display = true
             },
 	        commitReborn() {
-                alert('转世！')
+                if (prompt('如果真的想好要进行转世，并且已经准备好失去当前账号的全部数据，请在下方输入「确认转世」。成功后页面将刷新，你将会重新进入注册流程。','','请确认') === '确认转世') {
+	                localStorage.removeItem('userid.night.xtzero.me')
+	                localStorage.removeItem('name.night.xtzero.me')
+	                this.$store.state.user.id = ''
+	                this.$store.state.user.name = ''
+	                window.location.reload()
+                } else {
+                    this.$message({
+	                    type: error,
+	                    message: '请做好充足准备再来'
+                    })
+                }
 	        },
 	        commitReturnBefore() {
-                alert('重生！')
+                if (!this.returnBefore.name) {
+                    this.$message({
+                        type: 'error',
+                        message: '请输入名字'
+                    })
+                    return false
+                }
+		        if (!this.returnBefore.password) {
+		            this.$message({
+			            type: 'error',
+			            message: '请输入重生口令'
+		            })
+			        return false
+		        }
+
+		        if (prompt('请在下方输入「确认重生」，来表明这个操作是经过了你的深思熟虑。', '', '请确认') === '确认重生') {
+		            if (confirm('请再次确认，是否真的要进行重生操作。重生后之前账号的数据将不复存在，全部的帖子、评论数据都将同步到当前账号。而且当前设备将在一段时间内禁止使用重生功能。这是最后一次确认，如果一切都确认完毕，请点击确认。')) {
+                        this.returnBefore.loading = true
+                        this.$utils.ajax('returnBefore', {
+                            password: this.returnBefore.password,
+                            name: this.returnBefore.name,
+                            userid: this.$store.state.user.id
+                        }).then((res) => {
+                            this.returnBefore.loading = false
+                            if (res.data.code === 200) {
+                                localStorage.setItem('canreturnbefore.night.xtzero.me', 1)
+                                alert('重生成功，点击确定后重新进入')
+                                window.location.reload()
+                            } else {
+                                this.$message({
+                                    type: 'error',
+                                    message: res.data.msg
+                                })
+                            }
+                        }).catch(() => {
+                            this.returnBefore.loading = false
+                            this.$message({
+                                type: 'error',
+                                message: '重生时出现问题'
+                            })
+                        })
+		            } else {
+                        this.$message({
+                            type: 'erorr',
+                            message: '请深思熟虑之后再来'
+                        })
+		            }
+		        } else {
+		            this.$message({
+			            type: 'erorr',
+			            message: '请深思熟虑之后再来'
+		            })
+		        }
 	        },
 	        commitDelete(v) {
                 alert('要删除啦')
