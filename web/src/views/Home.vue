@@ -19,7 +19,7 @@
         {{ v.content }}
       </div>
       <p class="time" @click="showDetail(v)">
-        {{ zipName(v.name) }} 于 {{ formatTime(v.create_at)}} 发送
+        {{ zipName(v.name) }} 于 {{ v.create_at }} 发送
         <br/>
         <span class="el-icon-chat-dot-round">{{ v.c_count ? v.c_count : 0 }}</span>
         <el-divider direction="vertical"></el-divider>
