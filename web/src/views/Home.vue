@@ -54,14 +54,14 @@
             type="textarea"
             placeholder="请输入内容"
             v-model="send.data.content"
-            :autosize="{ minRows: 3, maxRows: 10}"
+            :autosize="{ minRows: 5, maxRows: 10}"
           >
           </el-input>
-          <span style="color: red;" v-if="this.send.data.content.length>30">
-            剩余字数 {{this.send.data.content.length}} / 30
+          <span style="color: red;" v-if="this.send.data.content.length>100">
+            剩余字数 {{this.send.data.content.length}} / 100
           </span>
           <span v-else>
-            剩余字数 {{this.send.data.content.length}} / 30
+            剩余字数 {{this.send.data.content.length}} / 100
           </span>
         </el-form-item>
       </el-form>
@@ -127,14 +127,14 @@
                     type="textarea"
                     placeholder="请输入内容"
                     v-model="detail.comment.data.content"
-                    :autosize="{ minRows: 3, maxRows: 10}"
+                    :autosize="{ minRows: 5, maxRows: 10}"
             >
             </el-input>
-            <span style="color: red;" v-if="detail.comment.data.content.length > 30">
-            剩余字数 {{detail.comment.data.content.length}} / 30
+            <span style="color: red;" v-if="detail.comment.data.content.length > 50">
+            剩余字数 {{detail.comment.data.content.length}} / 50
           </span>
             <span v-else>
-            剩余字数 {{detail.comment.data.content.length}} / 30
+            剩余字数 {{detail.comment.data.content.length}} / 50
           </span>
           </el-form-item>
         </el-form>
