@@ -258,7 +258,6 @@ class index extends coreController {
     public function upload()
     {
         $files = $_FILES['file'];
-        var_dump($files);
         $filename = date('Ymd').rand(100000,999999).'.wav';
         $dir = $_SERVER['DOCUMENT_ROOT'].'/upload/'.$filename;
         $move = move_uploaded_file($files['tmp_name'],$dir);
@@ -266,10 +265,5 @@ class index extends coreController {
             'move' => $move,
             'url' => $filename
         ]);
-    }
-
-    public function sendVoice()
-    {
-
     }
 }
