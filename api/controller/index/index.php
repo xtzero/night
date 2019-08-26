@@ -72,12 +72,13 @@ class index extends coreController {
      */
     public function sendMoment()
     {
-        $this->param('userid,content');
+        $this->param('userid,content,*type=normal');
         $send = $this->m->table(self::moment)->mode('insert')->data([
             'content' => $this->content,
             'create_at' => date('Y-m-d H:i:s'),
             'valid' => 1,
-            'create_user' => $this->userid
+            'create_user' => $this->userid,
+            'type' => $this->type
         ])->query();
         if ($send) {
             ajax(200, '成功', [
@@ -173,7 +174,7 @@ class index extends coreController {
         $momentDetail = $this->m
                             ->table(self::moment)
                             ->mode('select')
-                            ->field('id,content,create_user,create_at,star,shit')
+                            ->field('*')
                             ->where("id={$this->mid} AND valid=1")
                             ->find();
         if (!empty($momentDetail)) {
@@ -257,6 +258,7 @@ class index extends coreController {
     public function upload()
     {
         $files = $_FILES['file'];
+        var_dump($files);
         $filename = date('Ymd').rand(100000,999999).'.wav';
         $dir = $_SERVER['DOCUMENT_ROOT'].'/upload/'.$filename;
         $move = move_uploaded_file($files['tmp_name'],$dir);
@@ -264,5 +266,10 @@ class index extends coreController {
             'move' => $move,
             'url' => $filename
         ]);
+    }
+
+    public function sendVoice()
+    {
+
     }
 }
