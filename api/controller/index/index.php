@@ -253,4 +253,16 @@ class index extends coreController {
             ajax(400, '重置用户状态失败，请稍后重试');
         }
     }
+
+    public function upload()
+    {
+        $files = $_FILES['file'];
+        $filename = date('Ymd').rand(100000,999999).'.wav';
+        $dir = $_SERVER['DOCUMENT_ROOT'].'/upload/'.$filename;
+        $move = move_uploaded_file($files['tmp_name'],$dir);
+        ajax(200, '', [
+            'move' => $move,
+            'url' => $filename
+        ]);
+    }
 }

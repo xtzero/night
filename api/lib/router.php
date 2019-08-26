@@ -13,5 +13,6 @@ return [
     'momentDetail' => 'index/index/momentDetail',
     'starOrShit' => 'index/index/starOrShit',
     'returnBefore' => 'index/index/returnBefore',
-    'reborn' => 'index/index/reborn'
+    'reborn' => 'index/index/reborn',
+    'upload' => 'index/index/upload'
 ];
