@@ -15,9 +15,27 @@
 				<i class="el-icon-moon-night" @click="showRebornDialog"> 转世</i>
 			</p>
 		</el-card>
-		<el-card class="box-card" v-for="v in list">
-			<div>
+		<el-card class="box-card" v-for="(v, k) in list">
+			<div v-if="v.type === 'normal'">
 				{{ v.content }}
+			</div>
+			<div v-else-if="v.type === 'voice'">
+				<el-row>
+					<el-col :span="3">
+						<i class="el-icon-video-play" v-show="playing.mid!=v.id" @click="play(v, k)"></i>
+						<i class="el-icon-circle-close" v-show="playing.mid==v.id" @click="stop"></i>
+					</el-col>
+					<el-col :span="19">
+						<el-progress
+								:text-inside="true"
+								:stroke-width="26"
+								:percentage="playing.mid===v.id ? ((Math.round(v.played) / Math.round(v.length)) * 100) : 0"
+								:show-text="false"
+						>
+						</el-progress>
+					</el-col>
+
+				</el-row>
 			</div>
 			<p class="time">
 				{{ v.name }} 于 {{ v.create_at }} 发送
@@ -112,7 +130,15 @@
 	                password: '',
                     loading: false
                 },
-	            canReturnBefore: true
+	            canReturnBefore: true,
+				playing: {
+					isPlaying: false,
+					mid: 0,
+					audioObj: {},
+					length: 1,
+					played: 0,
+					playInterval: {}
+				}
             }
         },
         mounted() {
@@ -121,8 +147,39 @@
             this.getMomentCount()
             this.getMomentList()
 	        this.canReturnBefore = localStorage.getItem('canreturnbefore.night.xtzero.me') == 1 ? false : true
+			this.playing.audioObj = new Audio()
         },
         methods: {
+			play(v, k) {
+				if (this.playing.isPlaying) {
+					this.$message({
+						message: '正在播放其他音频',
+						type: 'error'
+					})
+					return false
+				}
+				this.playing.audioObj.src = v.content
+				this.playing.mid = v.id
+				this.playing.audioObj.addEventListener("canplay", () => {
+					this.playing.isPlaying = true
+					this.playing.audioObj.play()
+					this.list[k].length = this.playing.audioObj.duration
+					this.playing.playInterval = setInterval(() => {
+						this.list[k].played = this.playing.audioObj.currentTime
+					}, 1000)
+					setTimeout(() => {
+						this.playing.audioObj.src = ''
+						this.playing.isPlaying = false
+						clearInterval(this.playing.playInterval)
+					}, (this.playing.audioObj.duration - 0 + 1) * 1000)
+				});
+			},
+			stop() {
+				this.playing.audioObj.pause()
+				this.playing.mid = 0
+				this.playing.isPlaying = false
+				clearInterval(this.playing.playInterval)
+			},
             getMomentCount() {
                 this.screenLoading = true
                 this.$utils.ajax("momentCount", {
@@ -155,6 +212,10 @@
                     if (res.data.code == 200) {
                         const d = res.data.data
                         for (const i in d) {
+							if (d[i].type === 'voice') {
+								d[i].length = 1
+								d[i].played = 0
+							}
                             this.list.push(d[i])
                         }
                         if (nextPage) {
@@ -258,7 +319,7 @@
 		        }
 	        },
 	        commitDelete(v) {
-                alert('要删除啦')
+                alert('要删除啦~但是我还没做这个功能。要是发了什么不得了的东西，就先忘掉它吧~')
 	        }
 
         },

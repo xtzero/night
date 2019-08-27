@@ -3,23 +3,52 @@
 <!--    话题卡片-->
     <el-card class="box-card first-card">
       <el-col :span="20">
-        <div class="notice-title">话题</div>
-        <div class="notice-content">本期主题：你为什么睡不着</div>
+        <div class="notice-title">表态</div>
+        <div class="notice-content">你为什么睡不着</div>
       </el-col>
       <el-col :span="4" class="first-card-col-right">
         <el-button icon="el-icon-edit" type="primary" circle @click="send.display=true"></el-button>
       </el-col>
     </el-card>
+    <el-card class="box-card first-card">
+      <el-col :span="20">
+        <div class="notice-title">呐喊</div>
+        <div class="notice-content">你觉得这世界如何</div>
+      </el-col>
+      <el-col :span="4" class="first-card-col-right">
+        <el-button icon="el-icon-microphone" type="primary" circle @click="sendVoice.display=true"></el-button>
+      </el-col>
+    </el-card>
 <!--    帖子卡片 循环-->
     <el-card
       class="box-card"
-      v-for="v in list"
+      v-for="(v, k) in list"
     >
-      <div @click="showDetail(v)">
+      <div @click="showDetail(v)" v-if="v.type === 'normal'">
         {{ v.content }}
       </div>
+      <div v-else-if="v.type === 'voice'">
+        <el-row>
+          <el-col :span="3">
+            <i class="el-icon-video-play" v-show="playing.mid!=v.id" @click="play(v, k)"></i>
+            <i class="el-icon-circle-close" v-show="playing.mid==v.id" @click="stop"></i>
+          </el-col>
+          <el-col :span="19">
+            <el-progress
+                    :text-inside="true"
+                    :stroke-width="26"
+                    :percentage="playing.mid===v.id ? ((Math.round(v.played) / Math.round(v.length)) * 100) : 0"
+                    :show-text="false"
+            >
+            </el-progress>
+          </el-col>
+
+        </el-row>
+      </div>
       <p class="time" @click="showDetail(v)">
-        {{ zipName(v.name) }} 于 {{ v.create_at }} 发送
+        {{ zipName(v.name) }} 于 {{ v.create_at }}
+        <span v-if="v.type === 'normal'"> 发送</span>
+        <span v-else-if="v.type === 'voice'"> 呐喊</span>
         <br/>
         <span class="el-icon-chat-dot-round">{{ v.c_count ? v.c_count : 0 }}</span>
         <el-divider direction="vertical"></el-divider>
@@ -66,7 +95,29 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="sendMoment" :disabled="this.send.data.content.length > 30">表态！</el-button>
+        <el-button type="primary" @click="sendMoment" :disabled="this.send.data.content.length > 100">表态！</el-button>
+      </div>
+    </el-dialog>
+<!--发语音 弹层-->
+    <el-dialog
+            title="那就呐喊"
+            :visible.sync="sendVoice.display"
+            width="100%"
+            v-loading="sendVoice.loading"
+    >
+      <el-form>
+        <el-form-item label-width="0">
+          <p v-show="sendVoice.speaking && !sendVoice.spoken"><i class="el-icon-loading"></i> 我在听。</p>
+          <p v-show="!sendVoice.speaking && !sendVoice.spoken"><i class="el-icon-ice-cream-round"></i> 请点击「讲」</p>
+          <p v-show="!sendVoice.speaking && sendVoice.spoken"><i class="el-icon-cold-drink"></i> 点击「听」来重审自我。</p>
+          <p v-show="!sendVoice.speaking && sendVoice.spoken"><i class="el-icon-dessert"></i> 点击「呐喊」来告知全世界</p>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="record" icon="el-icon-mic" v-show="!sendVoice.speaking">讲</el-button>
+        <el-button type="primary" @click="record" icon="el-icon-mic" v-show="sendVoice.speaking">讲毕</el-button>
+        <el-button type="primary" :disabled="sendVoice.listening" @click="reply" icon="el-icon-headset" v-show="!sendVoice.speaking && sendVoice.spoken">听</el-button>
+        <el-button type="primary" v-show="sendVoice.spoken" @click="uploadVoice" v-loading="sendVoice.uploading">呐喊！</el-button>
       </div>
     </el-dialog>
 
@@ -76,8 +127,11 @@
       :fullscreen="true"
       v-loading="detail.loading"
     >
-      <h3><i class="el-icon-sugar" style="font-size: 20px;"></i> {{zipName(detail.data.name)}} 说：</h3>
-      <span class="detail-content">{{detail.data.content}}</span>
+      <h3><i class="el-icon-sugar" style="font-size: 20px;"></i> {{zipName(detail.data.name)}}
+        <span v-if="detail.data.type=='normal'"> 说：</span>
+        <span v-else-if="detail.data.type=='voice'"> 曾经呐喊</span>
+      </h3>
+      <span class="detail-content" v-if="detail.data.type=='normal'">{{detail.data.content}}</span>
       <p class="time" style="margin-bottom: 30px;">{{detail.data.create_at}}</p>
       <div class="block">
         <el-row style="display: flex;flex-direction: row;justify-content: space-between;width: 100%;">
@@ -147,6 +201,7 @@
 </template>
 
 <script>
+  import Recorder from 'js-audio-recorder'
   export default {
     name: 'home',
     components: {},
@@ -162,6 +217,15 @@
           data: {
             content: ''
           }
+        },
+        sendVoice: {
+          display: false,
+          loading: false,
+          speaking: false,  // 正在说
+          spoken: false,    // 讲完了
+          listening: false,  // 正在听
+          uploading: false,
+          url: ''
         },
         detail: {
           loading: false,
@@ -179,14 +243,120 @@
             },
             loading: false
           }
+        },
+        isRecording: false,
+        recorder: {},
+        playing: {
+          isPlaying: false,
+          mid: 0,
+          audioObj: {},
+          length: 1,
+          played: 0,
+          playInterval: {}
         }
       }
     },
     mounted() {
       this.$checkUser()
       this.getMomentList()
+      this.recorder = new Recorder()
+      this.playing.audioObj = new Audio()
     },
     methods: {
+      play(v, k) {
+        if (this.playing.isPlaying) {
+          this.$message({
+            message: '正在播放其他音频',
+            type: 'error'
+          })
+          return false
+        }
+        this.playing.audioObj.src = v.content
+        this.playing.mid = v.id
+        this.playing.audioObj.addEventListener("canplay", () => {
+          this.playing.isPlaying = true
+          this.playing.audioObj.play()
+          this.list[k].length = this.playing.audioObj.duration
+          this.playing.playInterval = setInterval(() => {
+            this.list[k].played = this.playing.audioObj.currentTime
+          }, 1000)
+          setTimeout(() => {
+            this.playing.audioObj.src = ''
+            this.playing.isPlaying = false
+            clearInterval(this.playing.playInterval)
+          }, (this.playing.audioObj.duration - 0 + 1) * 1000)
+        });
+      },
+      stop() {
+        this.playing.audioObj.pause()
+        this.playing.mid = 0
+        this.playing.isPlaying = false
+        clearInterval(this.playing.playInterval)
+      },
+      record() {
+        if (this.isRecording) {
+          this.sendVoice.speaking = false
+          this.sendVoice.spoken = true
+          this.recorder.stop()
+        } else {
+          this.sendVoice.speaking = true
+          this.sendVoice.spoken = false
+          this.recorder.start()
+        }
+        this.isRecording = !this.isRecording
+      },
+      reply() {
+        this.sendVoice.listening = true
+        this.recorder.play()
+        setTimeout(() => {
+          this.sendVoice.listening = false
+        }, 2000)
+      },
+      uploadVoice() {
+        this.sendVoice.uploading = true
+        const wav = new Blob([ this.recorder.getWAV() ], { type: 'audio/wav' })
+        const xhr = new XMLHttpRequest()
+        xhr.open("POST",'http://nightapi.xtzero.me/index.php/upload',true)
+        xhr.onload = (e) => {
+          this.sendVoice.uploading = false
+          this.sendVoice.display = false
+          const res = JSON.parse(e.currentTarget.responseText)
+          if (res.code === 200) {
+            const url = 'http://nightvoice.xtzero.me/' + res.data.url
+            this.sendVoice.url = url
+            this.$utils.ajax('sendMoment', {
+              userid: this.$store.state.user.id,
+              content: this.sendVoice.url,
+              type: 'voice'
+            }).then((res) => {
+              this.screenLoading = false
+              this.send.data.content = ''
+              this.send.display = false
+              this.reload()
+            })
+          } else {
+            this.$message({
+              message: res.msg,
+              type: error
+            })
+          }
+        }
+        xhr.onerror = () => {
+          this.sendVoice.uploading = false
+          this.sendVoice.display = false
+          this.$message({
+            message: '语音消息上传错误',
+            type: error
+          })
+        }
+        const form = new FormData()
+        const files = new window.File(
+            [wav],
+            '123',
+        )
+        form.append('file', files)
+        xhr.send(form)
+      },
       getMomentList(nextPage) {
         let page;
         if (nextPage) {
@@ -199,9 +369,13 @@
           page: page
         }).then((res) => {
           this.screenLoading = false
-          if (res.data.code == 200) {
+          if (res.data.code === 200) {
             const d = res.data.data
             for (const i in d) {
+              if (d[i].type === 'voice') {
+                d[i].length = 1
+                d[i].played = 0
+              }
               this.list.push(d[i])
             }
             if (nextPage) {
