@@ -72,13 +72,14 @@ class index extends coreController {
      */
     public function sendMoment()
     {
-        $this->param('userid,content,*type=normal');
+        $this->param('userid,content,*type=normal,*image');
         $send = $this->m->table(self::moment)->mode('insert')->data([
             'content' => $this->content,
             'create_at' => date('Y-m-d H:i:s'),
             'valid' => 1,
             'create_user' => $this->userid,
-            'type' => $this->type
+            'type' => $this->type,
+            'image' => $this->image
         ])->query();
         if ($send) {
             ajax(200, '成功', [
@@ -259,6 +260,21 @@ class index extends coreController {
     {
         $files = $_FILES['file'];
         $filename = date('Ymd').rand(100000,999999).'.wav';
+        $dir = $_SERVER['DOCUMENT_ROOT'].'/upload/'.$filename;
+        $move = move_uploaded_file($files['tmp_name'],$dir);
+        ajax(200, '', [
+            'move' => $move,
+            'url' => $filename
+        ]);
+    }
+
+    public function uploadImage()
+    {
+        $files = $_FILES['file'];
+        if ($files['size'] > 50000) {
+            ajax(500, '文件大于5M，有点难顶');
+        }
+        $filename = date('Ymd').rand(100000,999999).$files['name'];
         $dir = $_SERVER['DOCUMENT_ROOT'].'/upload/'.$filename;
         $move = move_uploaded_file($files['tmp_name'],$dir);
         ajax(200, '', [

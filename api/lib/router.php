@@ -14,5 +14,6 @@ return [
     'starOrShit' => 'index/index/starOrShit',
     'returnBefore' => 'index/index/returnBefore',
     'reborn' => 'index/index/reborn',
-    'upload' => 'index/index/upload'
+    'upload' => 'index/index/upload',
+    'uploadImage' => 'index/index/uploadImage'
 ];
