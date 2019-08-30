@@ -103,7 +103,7 @@ class index extends coreController {
         if ($_userid = $this->userid) {
             $this->m->where("valid=1 AND create_user='{$_userid}'");
         } else {
-            $this->m->where("valid=1");
+            $this->m->where("valid=1 AND shit<50");
         }
 
         $moments = $moments->page($this->page)
