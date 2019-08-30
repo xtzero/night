@@ -15,5 +15,6 @@ return [
     'returnBefore' => 'index/index/returnBefore',
     'reborn' => 'index/index/reborn',
     'upload' => 'index/index/upload',
-    'uploadImage' => 'index/index/uploadImage'
+    'uploadImage' => 'index/index/uploadImage',
+    'articleList' => 'index/index/articleList'
 ];

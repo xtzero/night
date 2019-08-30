@@ -11,6 +11,7 @@ class index extends coreController {
     const user = 'night_user';
     const moment = 'night_moment';
     const comment = 'night_comment';
+    const article = 'night_article';
 
     public function __construct()
     {
@@ -282,5 +283,19 @@ class index extends coreController {
             'move' => $move,
             'url' => $filename
         ]);
+    }
+
+    public function articleList()
+    {
+        $articleList = $this->m
+            ->table(self::article)
+            ->mode('select')
+            ->field('*')
+            ->query();
+        if (!empty($articleList)) {
+            ajax(200, '成功', $articleList);
+        } else {
+            ajax(500, '没有了');
+        }
     }
 }
