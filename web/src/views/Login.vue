@@ -13,12 +13,12 @@
                     <el-form-item>
                         <el-button type="primary" @click="onSubmit" style="width: 100%">加入我们</el-button>
                     </el-form-item>
-                    <p>如果你想永久保留这个名字，我们建议你</p>
-                    <p v-show="!usepassword"><el-checkbox v-model="usepassword">使用转生口令</el-checkbox></p>
-                    <el-form-item v-if="usepassword">
-                        <el-input v-model="password" type="password" placeholder="转生口令"></el-input>
-                    </el-form-item>
-                    <p v-show="usepassword">转生口令会在账号失效的时候起到作用，让你能继续使用这个账号。</p>
+<!--                    <p>如果你想永久保留这个名字，我们建议你</p>-->
+<!--                    <p v-show="!usepassword"><el-checkbox v-model="usepassword">使用转生口令</el-checkbox></p>-->
+<!--                    <el-form-item v-if="usepassword">-->
+<!--                        <el-input v-model="password" type="password" placeholder="转生口令"></el-input>-->
+<!--                    </el-form-item>-->
+<!--                    <p v-show="usepassword">转生口令会在账号失效的时候起到作用，让你能继续使用这个账号。</p>-->
                 </el-form>
             </div>
         </el-main>
