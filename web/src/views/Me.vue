@@ -9,8 +9,8 @@
 			</p>
 			<el-divider></el-divider>
 			<p class="time card-bottom">
-				<i class="el-icon-cold-drink" @click="showReturnBeforeDialog" v-if="canReturnBefore"> 重生</i>
-				<i class="el-icon-cold-drink" v-else> 重生已经被禁用</i>
+<!--				<i class="el-icon-cold-drink" @click="showReturnBeforeDialog" v-if="canReturnBefore"> 重生</i>-->
+<!--				<i class="el-icon-cold-drink" v-else> 重生已经被禁用</i>-->
 				<span style="margin-left: 20px;"></span>
 				<i class="el-icon-moon-night" @click="showRebornDialog"> 转世</i>
 			</p>
