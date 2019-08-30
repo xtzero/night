@@ -271,13 +271,14 @@ class index extends coreController {
     public function uploadImage()
     {
         $files = $_FILES['file'];
-        if ($files['size'] > 50000) {
+        if ($files['size'] > 5000000) {
             ajax(500, '文件大于5M，有点难顶', $files);
         }
         $filename = date('Ymd').rand(100000,999999).$files['name'];
         $dir = $_SERVER['DOCUMENT_ROOT'].'/upload/'.$filename;
         $move = move_uploaded_file($files['tmp_name'],$dir);
         ajax(200, '', [
+            'file' => $files,
             'move' => $move,
             'url' => $filename
         ]);
