@@ -20,7 +20,11 @@
             v-loading="detail.loading"
             width="100%"
     >
-      <h3>
+      <h3 v-if="this.detail.restSecond===0">
+        <i class="el-icon-cold-drink" style="font-size: 20px;"></i>
+        一路顺风
+      </h3>
+      <h3 v-else>
         <i class="el-icon-ship" style="font-size: 20px;"></i>
         即将跳转： {{detail.data.title}}  <br>
         {{detail.data.url}} <br><br>
@@ -59,6 +63,9 @@
         this.detail.data.url = v.url
         this.detail.restSecond = 3
         setInterval(() => {
+          if (this.detail.restSecond === 0) {
+            this.detail.restSecond = 0
+          }
           this.detail.restSecond --
         }, 1000)
         setTimeout(() => {
