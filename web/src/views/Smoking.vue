@@ -5,7 +5,7 @@
       吸烟区
     </h1>
     <p>我们希望吸烟区能带给来访者更多的意外。</p>
-    <el-card :body-style="{ padding: '0px' }" class="smoking-card" v-for="(v, k) in list">
+    <el-card :body-style="{ padding: '0px' }" class="smoking-card" v-for="(v, k) in list" style="margin-bottom: 15px;">
       <el-image
         class="image"
         :src="v.image"
