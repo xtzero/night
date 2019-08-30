@@ -65,8 +65,9 @@
         setInterval(() => {
           if (this.detail.restSecond === 0) {
             this.detail.restSecond = 0
+          } else {
+              this.detail.restSecond --
           }
-          this.detail.restSecond --
         }, 1000)
         setTimeout(() => {
           window.location.href = v.url
