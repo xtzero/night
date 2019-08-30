@@ -53,9 +53,11 @@ export default {
                 return false
             }
             this.screenLoading = true
+            const name = this.name + '%23' + this.$utils.rand(1000,9999)
+            const password = this.password ? this.password : this.$utils.rand(10000000,99999999)
             this.$utils.ajax('addUser',{
-                name: this.name,
-                password: this.password ? this.password : this.$utils.rand(10000000,99999999)
+                name: name,
+                password: password
             }).then((res) => {
                 this.screenLoading = false
                 if (res.data.code === 200) {

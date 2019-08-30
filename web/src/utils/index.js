@@ -8,7 +8,6 @@ export function ajax(url, params) {
         _url.push(i + '=' + params[i])
     }
     const sendUrl = apiPre + url + '?' + _url.join('&')
-
     return axios.get(sendUrl)
 }
 

@@ -10,40 +10,52 @@
         <el-button icon="el-icon-edit" type="primary" circle @click="send.display=true"></el-button>
       </el-col>
     </el-card>
-    <el-card class="box-card first-card">
-      <el-col :span="20">
-        <div class="notice-title">呐喊</div>
-        <div class="notice-content">你觉得这世界如何</div>
-      </el-col>
-      <el-col :span="4" class="first-card-col-right">
-        <el-button icon="el-icon-microphone" type="primary" circle @click="sendVoice.display=true"></el-button>
-      </el-col>
-    </el-card>
+<!--    <el-card class="box-card first-card">-->
+<!--      <el-col :span="20">-->
+<!--        <div class="notice-title">呐喊</div>-->
+<!--        <div class="notice-content">你觉得这世界如何</div>-->
+<!--      </el-col>-->
+<!--      <el-col :span="4" class="first-card-col-right">-->
+<!--        <el-button icon="el-icon-microphone" type="primary" circle @click="sendVoice.display=true"></el-button>-->
+<!--      </el-col>-->
+<!--    </el-card>-->
 <!--    帖子卡片 循环-->
     <el-card
       class="box-card"
       v-for="(v, k) in list"
     >
-      <div @click="showDetail(v)" v-if="v.type === 'normal'">
-        {{ v.content }}
+      <div v-if="v.image">
+        <el-image
+          style="width: 100%; height: 100px"
+          :src="v.image"
+          fit="cover"
+          @click="showDetail(v)"
+        >
+        </el-image>
+        <p style="margin: 0 0;color: black;font-size: 15px;">{{v.content}}</p>
       </div>
-      <div v-else-if="v.type === 'voice'">
-        <el-row>
-          <el-col :span="3">
-            <i class="el-icon-video-play" v-show="playing.mid!=v.id" @click="play(v, k)"></i>
-            <i class="el-icon-circle-close" v-show="playing.mid==v.id" @click="stop"></i>
-          </el-col>
-          <el-col :span="19">
-            <el-progress
-                    :text-inside="true"
-                    :stroke-width="26"
-                    :percentage="playing.mid===v.id ? ((Math.round(v.played) / Math.round(v.length)) * 100) : 0"
-                    :show-text="false"
-            >
-            </el-progress>
-          </el-col>
+      <div v-else>
+        <div @click="showDetail(v)" v-if="v.type === 'normal'">
+          {{ v.content }}
+        </div>
+        <div v-else-if="v.type === 'voice'">
+          <el-row>
+            <el-col :span="3">
+              <i class="el-icon-video-play" v-show="playing.mid!=v.id" @click="play(v, k)"></i>
+              <i class="el-icon-circle-close" v-show="playing.mid==v.id" @click="stop"></i>
+            </el-col>
+            <el-col :span="19">
+              <el-progress
+                      :text-inside="true"
+                      :stroke-width="26"
+                      :percentage="playing.mid===v.id ? ((Math.round(v.played) / Math.round(v.length)) * 100) : 0"
+                      :show-text="false"
+              >
+              </el-progress>
+            </el-col>
 
-        </el-row>
+          </el-row>
+        </div>
       </div>
       <p class="time" @click="showDetail(v)">
         {{ zipName(v.name) }} 于 {{ v.create_at }}
@@ -92,10 +104,21 @@
           <span v-else>
             剩余字数 {{this.send.data.content.length}} / 100
           </span>
+          <el-row v-show="send.image.url">
+            <input type="file" accept="image/*" ref="inputimage" v-show="false" @change="imageInputOnChange">
+            <el-image
+                    style="width: 70px; height: 70px"
+                    :src="send.image.url"
+                    :preview-src-list="imgSrcList"
+                    @click="clearImg"
+                    fit="fill">
+            </el-image>
+          </el-row>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="sendMoment" :disabled="this.send.data.content.length > 100">表态！</el-button>
+      <div slot="footer" class="dialog-footer" style="margin-top: -30px;">
+        <el-button size="small" type="primary" icon="el-icon-picture-outline-round" @click="addImage" v-loading="send.image.uploading">带图</el-button>
+        <el-button size="small" type="primary" @click="sendMoment" :disabled="this.send.data.content.length > 100">表态！</el-button>
       </div>
     </el-dialog>
 <!--发语音 弹层-->
@@ -132,6 +155,13 @@
         <span v-else-if="detail.data.type=='voice'"> 曾经呐喊</span>
       </h3>
       <span class="detail-content" v-if="detail.data.type=='normal'">{{detail.data.content}}</span>
+      <el-image
+          v-if="detail.data.image"
+          style="width: 100%;height: auto;"
+          :src="detail.data.image"
+          fit="cover"
+      >
+      </el-image>
       <p class="time" style="margin-bottom: 30px;">{{detail.data.create_at}}</p>
       <div class="block">
         <el-row style="display: flex;flex-direction: row;justify-content: space-between;width: 100%;">
@@ -216,6 +246,10 @@
           display: false,
           data: {
             content: ''
+          },
+          image: {
+            uploading: false,
+            url: ''
           }
         },
         sendVoice: {
@@ -263,6 +297,53 @@
       this.playing.audioObj = new Audio()
     },
     methods: {
+      clearImg() {
+        if (confirm('清除图片吗？')) {
+          this.send.image.url = ''
+          this.$message({
+            type: 'success',
+            message: '完成了'
+          });
+        }
+      },
+      imageInputOnChange(e) {
+        const fileList = this.$refs.inputimage.files
+        if (fileList.length > 1) {
+          this.$message({
+            message: '多图只取第一张'
+          })
+        }
+        const imageFile = fileList[0]
+        const xhr = new XMLHttpRequest()
+        xhr.open("POST",'http://nightapi.xtzero.me/index.php/uploadImage',true)
+        xhr.onload = (e) => {
+          this.send.image.uploading = false
+          const res = JSON.parse(e.currentTarget.responseText)
+          if (res.code === 200) {
+            const url = 'http://nightvoice.xtzero.me/' + res.data.url
+            this.send.image.url = url
+          } else {
+            this.$message({
+              message: res.msg,
+              type: error
+            })
+          }
+        }
+        xhr.onerror = () => {
+          this.send.image.uploading = false
+          this.$message({
+            message: '图片上传错误',
+            type: 'error'
+          })
+        }
+        const form = new FormData()
+        form.append('file', imageFile)
+        this.send.image.uploading = true
+        xhr.send(form)
+      },
+      addImage() {
+        this.$refs.inputimage.click()
+      },
       play(v, k) {
         if (this.playing.isPlaying) {
           this.$message({
@@ -412,7 +493,8 @@
         this.screenLoading = true
         this.$utils.ajax('sendMoment', {
           userid: this.$store.state.user.id,
-          content: this.send.data.content
+          content: this.send.data.content,
+          image: this.send.image.url
         }).then((res) => {
           this.screenLoading = false
           this.send.data.content = ''
@@ -549,6 +631,11 @@
         } else if (this.detail.sos == 0) {
           return '松手表示反对'
         }
+      },
+      imgSrcList() {
+        return [
+                this.send.image.url
+        ]
       }
     }
   }
