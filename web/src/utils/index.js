@@ -1,4 +1,5 @@
 import axios from 'axios'
+import ImageCompressor from 'image-compressor.js';
 
 const apiPre = 'http://nightapi.xtzero.me/index.php/'
 // const apiPre = 'http://localhost:1187/index.php/'
@@ -68,4 +69,21 @@ export function formatTime(nums, full) {
     }
     //系统显示时间
     return year + mon + day + hour + ":" + mins;
+}
+
+export function zipImage(file) {
+    return new Promise((resolve, reject) => {
+        if (!file) {
+            reject()
+        }
+        new ImageCompressor(file, {
+            quality: 0.6,
+            success(result) {
+                resolve(result)
+            },
+            error(e) {
+                reject(e)
+            },
+        });
+    })
 }

@@ -314,32 +314,34 @@
           })
         }
         const imageFile = fileList[0]
-        const xhr = new XMLHttpRequest()
-        xhr.open("POST",'http://nightapi.xtzero.me/index.php/uploadImage',true)
-        xhr.onload = (e) => {
-          this.send.image.uploading = false
-          const res = JSON.parse(e.currentTarget.responseText)
-          if (res.code === 200) {
-            const url = 'http://nightvoice.xtzero.me/' + res.data.url
-            this.send.image.url = url
-          } else {
-            this.$message({
-              message: res.msg,
-              type: error
-            })
+        this.$utils.zipImage(imageFile).then((file) => {
+          const xhr = new XMLHttpRequest()
+          xhr.open("POST",'http://nightapi.xtzero.me/index.php/uploadImage',true)
+          xhr.onload = (e) => {
+              this.send.image.uploading = false
+              const res = JSON.parse(e.currentTarget.responseText)
+              if (res.code === 200) {
+                  const url = 'http://nightvoice.xtzero.me/' + res.data.url
+                  this.send.image.url = url
+              } else {
+                  this.$message({
+                      message: res.msg,
+                      type: error
+                  })
+              }
           }
-        }
-        xhr.onerror = () => {
-          this.send.image.uploading = false
-          this.$message({
-            message: '图片上传错误',
-            type: 'error'
-          })
-        }
-        const form = new FormData()
-        form.append('file', imageFile)
-        this.send.image.uploading = true
-        xhr.send(form)
+          xhr.onerror = () => {
+              this.send.image.uploading = false
+              this.$message({
+                  message: '图片上传错误',
+                  type: 'error'
+              })
+          }
+          const form = new FormData()
+          form.append('file', file)
+          this.send.image.uploading = true
+          xhr.send(form)
+        })
       },
       addImage() {
         this.$refs.inputimage.click()
@@ -462,7 +464,7 @@
             if (nextPage) {
               this.page++
             }
-          } else if (res.data.msg == '没有更多数据了') {
+          } else if (res.data.msg === '没有更多数据了') {
             this.$message({
               type: 'error',
               message: res.data.msg

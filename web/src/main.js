@@ -3,13 +3,14 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './plugins/element.js'
-import { ajax,rand,formatTime } from './utils/index.js'
+import { ajax,rand,formatTime,zipImage } from './utils/index.js'
 
 Vue.config.productionTip = false
 const utils = {
   ajax: ajax,
   rand: rand,
-  formatTime: formatTime
+  formatTime: formatTime,
+  zipImage: zipImage
 }
 Vue.prototype.$utils = utils
 Vue.prototype.$checkUser = function() {
