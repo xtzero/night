@@ -87,13 +87,14 @@
       :visible.sync="send.display"
       width="100%"
       v-loading="send.loading"
+      :fullscreen="true"
     >
       <el-form>
         <el-form-item label-width="0">
           <el-input
             :rows="10"
             type="textarea"
-            placeholder="请输入内容"
+            :placeholder="send.placeholder"
             v-model="send.data.content"
             :autosize="{ minRows: 5, maxRows: 10}"
           >
@@ -247,6 +248,7 @@
           data: {
             content: ''
           },
+          placeholder: '表明态度',
           image: {
             uploading: false,
             url: ''
@@ -493,6 +495,10 @@
       sendMoment() {
         // 帖子要不要存话题啊？
         this.screenLoading = true
+        if (this.send.data.content == '') {
+          this.send.placeholder = '至少说点什么吧？'
+          return false
+        }
         this.$utils.ajax('sendMoment', {
           userid: this.$store.state.user.id,
           content: this.send.data.content,
