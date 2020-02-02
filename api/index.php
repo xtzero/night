@@ -1,10 +1,4 @@
 <?php
-echo json_encode([
-    'code' => '0',
-    'msg' => '这个项目已经下机',
-    'data' => []
-]);
-die();
 //错误提示
 error_reporting(E_ALL);
 
