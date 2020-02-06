@@ -16,5 +16,10 @@ return [
     'reborn' => 'index/index/reborn',
     'upload' => 'index/index/upload',
     'uploadImage' => 'index/index/uploadImage',
-    'articleList' => 'index/index/articleList'
+    'articleList' => 'index/index/articleList',
+
+
+    'sendVeryfyCode' => 'index/postcard/sendVeryfyCode',
+    'sendPostcard' => 'index/postcard/sendPostcard',
+    'readPostcard' => 'index/postcard/readPostcard'
 ];

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <title>xtPostcard | 寄一个明信片</title>
+    <style>
+        document, html, body {
+            margin: 0;
+        }
+        .container{
+            display: flex;
+            flex-direction: row;
+            width: 100vw;
+            height: 100vh;
+            background-color: #001F39;
+        }
+        .container *{
+            color: #00FEFC;
+        }
+
+        #verifycode{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+        #postcard{
+            display: none;
+        }
+        .code-title{
+            font-size: 3rem;
+        }
+        .code-input{
+            width: 90%;
+            height: 44px;
+            font-size: 38px;
+            border-style: none;
+            border-bottom: solid 1px #00FEFC;
+            background-color: rgba(0,0,0,0);
+            color: white;
+            text-align: center;
+            margin-top: 5px;
+        }
+        .code-get{
+            border: solid 2px #00FEFC;
+            padding: 2px 5px;
+            font-size: 2rem;
+            margin-top: 15px;
+        }
+
+        .code-get:hover{
+            border: solid 2px white;
+            color: white;
+            padding: 2px 5px;
+            font-size: 2rem;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div id="verifycode">
+        <div class="code-title">输入验证码</div>
+        <input type="text" class="code-input">
+        <div class="code-get">取件</div>
+    </div>
+    <div id="postcard">
+        展示明信片
+    </div>
+</div>
+</body>
+</html>
