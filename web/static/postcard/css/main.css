@@ -1,0 +1,24 @@
+*{ margin:0; padding:0; border:none}
+img{ width:100%;}
+.bg{background: url('../img/bg.png') no-repeat;min-height:1080px;background-size:100%; opacity: 0; transition: all 2s ease .5s;}
+.bg.active{ opacity: 1;}
+.message{ width:600px; position: fixed; margin-top:-237px;margin-left:-300px;left:50%; top:50%; cursor: pointer;transition: all .3s ease .5s;}
+.message:hover{width:620px;margin-left:-310px;top:48%;}
+.message span{    
+    position: absolute;
+    right: 4%;
+    bottom: 20%;
+    font-size: 16px;
+    font-weight: bold;
+    color: #f189a2;}
+#verifycode{ width:400px;height:300px; position: fixed; left:50%; top:50%; margin:-150px 0 0 -200px; display: none; background:url('../img/popbg.png') no-repeat; background-size: 100%;}
+#verifycode .code-title{color:#fff; margin-top:10%;margin-left:20%}
+#verifycode .code-input{ margin-left:20%;height:30px;border:0; border-bottom:2px solid #fff; background:none; outline: 0; color:#fff; font-size:18px;}
+#verifycode .code-get{margin-left:20%;margin-top:15px; color:#fff; border:2px solid #fff; border-radius: 5px; display: inline-block; padding:3px 8px;}
+.popBg{ background:rgba(0,0,0,.5); position: fixed; left:0; top:0; width:100%; height:100%; display: none;}
+#postcard{ position: fixed;display: none; border-radius: 10px; left:50%;width:961px;height:540px;top:50%; margin-left:-480px; margin-top:-270px; background:url('../img/contentBg.png') no-repeat; background-size: 100%;}
+#postcard .close{ position: absolute; right:20px;top:20px;width:25px; cursor: pointer;}
+#postcard .content{width:630px;margin-left:25%;margin-top:9%; transform: rotate(7.5deg);}
+#postcard .content .title{font-size:25px; font-weight:bold}
+#postcard .content .text{font-size:19px;margin-left:10%; line-height:28px;margin-top:5%}
+#postcard .content .form{font-size:22px; margin-top:20px; text-align: right;}

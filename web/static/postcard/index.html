@@ -4,71 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
     <title>xtPostcard | 寄一个明信片</title>
-    <style>
-        document, html, body {
-            margin: 0;
-        }
-        .container{
-            display: flex;
-            flex-direction: row;
-            width: 100vw;
-            height: 100vh;
-            background-color: #001F39;
-        }
-        .container *{
-            color: #00FEFC;
-        }
-
-        #verifycode{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-        }
-        #postcard{
-            display: none;
-        }
-        .code-title{
-            font-size: 3rem;
-        }
-        .code-input{
-            width: 90%;
-            height: 44px;
-            font-size: 38px;
-            border-style: none;
-            border-bottom: solid 1px #00FEFC;
-            background-color: rgba(0,0,0,0);
-            color: white;
-            text-align: center;
-            margin-top: 5px;
-        }
-        .code-get{
-            border: solid 2px #00FEFC;
-            padding: 2px 5px;
-            font-size: 2rem;
-            margin-top: 15px;
-        }
-
-        .code-get:hover{
-            border: solid 2px white;
-            color: white;
-            padding: 2px 5px;
-            font-size: 2rem;
-            margin-top: 15px;
-        }
-    </style>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/jquery-3.4.1.min.js"></script>
+    
 </head>
 <body>
-<div class="container">
+<div class="bg">
+    <div class="message">
+        <img src="img/message.png" alt="" srcset="">
+        <span>点击开启</span>
+    </div>
     <div id="verifycode">
         <div class="code-title">输入验证码</div>
         <input type="text" class="code-input">
         <div class="code-get">取件</div>
     </div>
+    <div class="popBg"></div>
     <div id="postcard">
-        展示明信片
+        <div class="close">
+            <img src="img/close.png" alt="">
+        </div>
+        <div class="content">
+            <div class="title">To:宇彤</div>
+            <div class="text">
+                惊觉相思不露，原来只因已入骨，情不知所起，一往而深。人世间有百媚千红，唯独你是我情之所钟。你走向我，我觉得一日不见如隔三秋，你朝我笑，我又觉得三秋未见不过一日。
+                三生有幸遇见你，人生只有两次幸运就好，一次遇见你，一次走到底。
+                对于世界，你是一个人，但对于我而言，你却是整个世界，你在时，你是一切，你不在时，一切是你。
+                你陪着我的时候，我从没羡慕过任何人。
+                我见过春日夏风秋叶冬雪，也踏遍南水北山东麓西岭，可这四季春秋，苍山泱水都不及你冲我展眉一笑。
+                你看，这么多人，这么大的世界，我遇到了你，你也遇到了我，真好。
+            </div>
+            <div class="form">Form:JS</div>
+        </div>
     </div>
+    <script src="js/main.js"></script>
 </div>
 </body>
 </html>

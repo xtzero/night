@@ -1,0 +1,17 @@
+$(function(){
+    $('.bg').addClass('active')
+    $('.message').click(function(){
+        $('#verifycode').show()
+    })
+    $('.code-get').click(function(){
+        $('#verifycode').hide()
+        $('.message').hide()
+        $('.popBg').show()
+        $('#postcard').show()
+    })
+    $('.close').click(function(){
+        $('.message').show()
+        $('.popBg').hide()
+        $('#postcard').hide()
+    })
+})
