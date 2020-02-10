@@ -15,8 +15,8 @@
         <span>点击开启</span>
     </div>
     <div id="verifycode">
-        <div class="code-title">输入验证码</div>
-        <input type="text" class="code-input">
+        <div class="code-title">输入取件码</div>
+        <input type="text" class="code-input" id="code-input">
         <div class="code-get">取件</div>
     </div>
     <div class="popBg"></div>
@@ -25,16 +25,11 @@
             <img src="img/close.png" alt="">
         </div>
         <div class="content">
-            <div class="title">To:宇彤</div>
-            <div class="text">
-                惊觉相思不露，原来只因已入骨，情不知所起，一往而深。人世间有百媚千红，唯独你是我情之所钟。你走向我，我觉得一日不见如隔三秋，你朝我笑，我又觉得三秋未见不过一日。
-                三生有幸遇见你，人生只有两次幸运就好，一次遇见你，一次走到底。
-                对于世界，你是一个人，但对于我而言，你却是整个世界，你在时，你是一切，你不在时，一切是你。
-                你陪着我的时候，我从没羡慕过任何人。
-                我见过春日夏风秋叶冬雪，也踏遍南水北山东麓西岭，可这四季春秋，苍山泱水都不及你冲我展眉一笑。
-                你看，这么多人，这么大的世界，我遇到了你，你也遇到了我，真好。
+            <!-- <div class="title">To:宇彤</div> -->
+            <div class="text" id="content">
+                如果你看到了这个内容，说明啥内容都没有
             </div>
-            <div class="form">Form:JS</div>
+            <div class="form" id="from">Form：异次元</div>
         </div>
     </div>
     <script src="js/main.js"></script>
