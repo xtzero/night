@@ -117,7 +117,7 @@ class postcard extends coreController {
                             '{$this->mobile}',
                             '{$this->from_name}',
                             0,
-                            ".date('Y-m-d H:i:s')."
+                            '".date('Y-m-d H:i:s')."'
                         );
                     ");
                     if ($insert) {
