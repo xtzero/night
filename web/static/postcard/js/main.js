@@ -1,9 +1,15 @@
+function a(message) {
+    alert(message)
+}
+
 $(function(){
     $('.bg').addClass('active')
-    $('.message').click(function(){
+    $('.openMsg').click(function(){
         $('#verifycode').show()
     })
-    // 输入取件码点了取件
+    $('.close-get').click(function(){
+        $('#verifycode').hide()
+    })
     $('.code-get').click(function(){
         $('.code-get').text('获取中')
         var verifyCode = $('#code-input').val()
@@ -28,11 +34,11 @@ $(function(){
                 if (req.code == 200) {
                     console.log(req)
                     $('#content').text(req.data[0].content)
-                    $('#from').text('from:' + req.data[0].from_name)
+                    $('#from').text('来自：' + req.data[0].from_name)
                     $('#verifycode').hide()
                     $('.message').hide()
                     $('.popBg').show()
-                    $('#postcard').show()
+                    $('.postcard.cnt').show()
                 } else {
                     a(req.msg)
                 }
@@ -44,14 +50,30 @@ $(function(){
                 alert('参加人数太多啦，一会再来吧~')
             }
         })
+        
     })
-    $('.close').click(function(){
+    $('.postcard.cnt .close').click(function(){
         $('.message').show()
         $('.popBg').hide()
-        $('#postcard').hide()
+        $('.postcard.cnt').hide()
     })
+    $('.sendShow').click(function(){
+        $('.popBg').show()
+        $('.postcard.send').show()
+    })
+    $('.postcard.send .close').click(function(){
+        $('.popBg').hide()
+        $('.postcard.send').hide()
+    })
+    textScreen()
+    $(window).resize(function(){
+        textScreen()
+    })
+    function textScreen(){
+        if($(window).width() < $(window).height() ){
+            $('body').attr('class','arround')
+        } else {
+            $('body').attr('class','normal')
+        }
+    }
 })
-
-function a(message) {
-    alert(message)
-}

@@ -11,28 +11,56 @@
 <body>
 <div class="bg">
     <div class="message">
-        <img src="img/message.png" alt="" srcset="">
-        <span>点击开启</span>
+        <a href="jacascript:void(0)" class="sendShow">我也寄一个</a>
+        <img src="img/message.png" alt="" srcset="" class="openMsg">
+        <span class="openMsg">点击开启</span>
     </div>
     <div id="verifycode">
+        <div class="close close-get">
+            ×
+        </div>
         <div class="code-title">输入取件码</div>
         <input type="text" class="code-input" id="code-input">
         <div class="code-get">取件</div>
     </div>
     <div class="popBg"></div>
-    <div id="postcard">
+    <div class="postcard cnt">
         <div class="close">
-            <img src="img/close.png" alt="">
+            ×
         </div>
         <div class="content">
             <!-- <div class="title">To:宇彤</div> -->
             <div class="text" id="content">
-                如果你看到了这个内容，说明啥内容都没有
+                如果你看到了这段内容，那就是什么都没有。
             </div>
-            <div class="form" id="from">Form：异次元</div>
+            <div class="form" id="from">来自：异次元</div>
+        </div>
+    </div>
+    <div class="postcard send">
+        <div class="close">
+            ×
+        </div>
+        <div class="content">
+            <div class="phoneTest">
+                你的手机号是：<input type="text" minlength="11" maxlength="11">
+                <a href="javascript:void(0)" class="sendPhoneTest">发送验证码</a><br>
+                验证码<input type="text" minlength="6" maxlength="6">
+            </div>
+            <div class="title">
+                收件人手机号是：<input type="text" placeholder="对方会收到短信哦"><br>
+                明信片来自：<input type="text" placeholder="就是寄信人（你）的名字啦">
+            </div>
+            <div class="text">
+                <textarea placeholder="要说点什么呢？"></textarea>
+            </div>
+            <a href="javascript:void(0)" class="sendButton">发送</a>
         </div>
     </div>
     <script src="js/main.js"></script>
+</div>
+<div class="phoneAround">
+    <img src="img/phoneAround.png" alt="" srcset="">
+    <div>请横屏观看</div>
 </div>
 </body>
 </html>
