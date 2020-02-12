@@ -51,6 +51,16 @@ a{ text-decoration: none;}
     border: 1px solid #f189a2;
     padding: 3px 10px;
     border-radius: 5px;}
+.sendShow1{position: absolute;
+        right: -60px;
+        top: 20px;
+        background-color: #f189a2;
+        color: white;
+        /* font-weight: bold; */
+        font-size: 15px;
+        border: 1px solid #f189a2;
+        padding: 3px 10px;
+        border-radius: 5px;}
     body.arround{ background:#000}
 body.normal .phoneAround{display: none;}
 body.normal .bg{display: block;}

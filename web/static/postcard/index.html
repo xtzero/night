@@ -28,6 +28,7 @@
         <div class="close">
             ×
         </div>
+        <a href="jacascript:void(0)" class="sendShow">我也寄一个</a>
         <div class="content">
             <!-- <div class="title">To:宇彤</div> -->
             <div class="text" id="content">
@@ -42,18 +43,20 @@
         </div>
         <div class="content">
             <div class="phoneTest">
-                你的手机号是：<input type="text" minlength="11" maxlength="11">
+                你的手机号是：<input type="text" minlength="11" maxlength="11" id="sendCard-mobileInput">
                 <a href="javascript:void(0)" class="sendPhoneTest">发送验证码</a><br>
-                验证码<input type="text" minlength="6" maxlength="6">
+                <div id="sendCard-verifyCode">
+                    验证码<input type="text" minlength="6" maxlength="6" id="sendCard-verifyCode-input">
+                </div>
             </div>
-            <div class="title">
-                收件人手机号是：<input type="text" placeholder="对方会收到短信哦"><br>
-                明信片来自：<input type="text" placeholder="就是寄信人（你）的名字啦">
+            <div class="title" id="rec" style="display: none;">
+                收件人手机号是：<input type="text" placeholder="对方会收到短信哦" id="sendTo-input"><br>
+                明信片来自：<input type="text" placeholder="就是寄信人（你）的名字啦" id="fromname-input">
             </div>
-            <div class="text">
-                <textarea placeholder="要说点什么呢？"></textarea>
+            <div class="text" id="sendPostcard" style="display: none;">
+                <textarea placeholder="要说点什么呢？" id="sendContent-textarea"></textarea>
             </div>
-            <a href="javascript:void(0)" class="sendButton">发送</a>
+            <a href="javascript:void(0)" id="sendPostcard-a" class="sendButton" style="display: none;">发送</a>
         </div>
     </div>
     <script src="js/main.js"></script>

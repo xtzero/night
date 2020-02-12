@@ -27,9 +27,6 @@ $(function(){
                 verifycode: verifyCode
             },
             type: "GET",
-            beforeSend: function(){
-                console.log(1)
-            },
             success: function(req){
                 if (req.code == 200) {
                     console.log(req)
@@ -50,7 +47,6 @@ $(function(){
                 alert('参加人数太多啦，一会再来吧~')
             }
         })
-        
     })
     $('.postcard.cnt .close').click(function(){
         $('.message').show()
@@ -65,6 +61,97 @@ $(function(){
         $('.popBg').hide()
         $('.postcard.send').hide()
     })
+    $('.sendPhoneTest').click(function() {
+        var mobile = $('#sendCard-mobileInput').val()
+        if (!mobile) {
+            a('请输入手机号')
+            return
+        }
+        if ($('.sendPhoneTest').text() != '发送验证码') {
+            return
+        }
+        sendStatus()
+        $.ajax({
+            url: 'http://nightapi.xtzero.me/index.php/sendVeryfyCode',
+            dataType: "json",
+            async: true,
+            data: {
+                mobile: mobile
+            },
+            type: "GET",
+            success: function(req){
+                if (req.code == 200) {
+                    $('.sendPhoneTest').text('已发送')
+                    $('#sendCard-verifyCode').show()
+                    $('#rec').show()
+                    $('#sendPostcard').show()
+                    $('#sendPostcard-a').show()
+                } else {
+                    a(req.msg)
+                }
+            },
+            error: function(){
+                alert('参加人数太多啦，一会再来吧~')
+            }
+        })
+        function sendStatus() {
+            $('.sendPhoneTest').text('发送中')
+            $('.sendPhoneTest').css('background-color', 'gray')
+        }
+        function normalStatus() {
+            $('.sendPhoneTest').text('发送验证码')
+            $('.sendPhoneTest').css('background-color', '#f189a2')
+        }
+    })
+    $('#sendPostcard-a').click(function (e) { 
+        if ($('#sendPostcard-a').text() != '发送') {
+            return
+        }
+        var myMobile = $('#sendCard-mobileInput').val();
+        if (!myMobile) {
+            a('请输入你自己的手机号')
+        }
+        var verifyCode = $('#sendCard-verifyCode-input').val();
+        if (!verifyCode) {
+            a('请输入验证码')
+        }
+        var sendToMobile = $('#sendTo-input').val();
+        if (!sendToMobile) {
+            a('请输入接受人的手机号')
+        }
+        var fromName = $('#fromname-input').val();
+        if (!fromName) {
+            a('请告诉我怎样称呼你，不然对方不知道是谁发的')
+        }
+        var content = $('#sendContent-textarea').val();
+        if (!content) {
+            a('寄明信片总要说点什么吧？')
+        }
+        $('#sendPostcard-a').text('发送中');
+        $.ajax({
+            url: 'http://nightapi.xtzero.me/index.php/sendPostcard',
+            dataType: "json",
+            async: true,
+            data: {
+                mobile: myMobile,
+                verifycode: verifyCode,
+                from_name: fromName,
+                content: content,
+                sendto: sendToMobile
+            },
+            type: "GET",
+            success: function(req){
+                if (req.code == 200) {
+                    $('#sendPostcard-a').text('发送成功');
+                } else {
+                    a(req.msg)
+                }
+            },
+            error: function(){
+                alert('参加人数太多啦，一会再来吧~')
+            }
+        })
+    });
     textScreen()
     $(window).resize(function(){
         textScreen()
