@@ -94,6 +94,7 @@ $(function(){
                     $('#sendPostcard-a').show()
                 } else {
                     a(req.msg)
+                    normalStatus()
                 }
             },
             error: function(){
