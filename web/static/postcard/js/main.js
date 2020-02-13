@@ -181,7 +181,7 @@ $(function(){
     });
 
     $('#wemade').click(function (e) { 
-        a("这个东西是无聊且不用过情人节的xt做的。\n感谢js兄弟的帮助，js兄弟会找到对象的。\n感谢朋友们帮我测试。\n\n2020.02.14")
+        a("这个东西是无聊且不用过情人节的xt做的。\n感谢js兄弟帮我做前端，让所有人能摸到这个页面。js兄弟会找到对象的。\n\n感谢下面朋友们帮我测试：\n楠哥\nhermit小新\nmia姐姐\n华晨宇的鑫浩\n远在一千多公里外的dlb\n坐在我右边的bb\n\n\n2020.02.14")
     });
     textScreen()
     $(window).resize(function(){
