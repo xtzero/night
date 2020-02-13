@@ -110,6 +110,22 @@ $(function(){
         }
     })
     $('#sendPostcard-a').click(function (e) { 
+        if ($('#sendPostcard-a').text() == '再发一个') {
+            // location.reload()
+            $('#sendCard-mobileInput').val('');
+            $('#sendCard-verifyCode-input').val('');
+            $('#sendTo-input').val('');
+            $('#fromname-input').val('');
+            $('#sendContent-textarea').val('');
+            $('#sendCard-verifyCode').hide()
+            $('#rec').hide()
+            $('#sendPostcard').hide()
+            $('#sendPostcard-a').hide()
+            $('.sendPhoneTest').text('发送验证码')
+            $('.sendPhoneTest').css('background-color', '#f189a2');
+            $('#sendPostcard-a').text('发送')
+            return
+        }
         if ($('#sendPostcard-a').text() != '发送') {
             return
         }
@@ -148,8 +164,11 @@ $(function(){
             type: "GET",
             success: function(req){
                 if (req.code == 200) {
-                    $('#sendPostcard-a').text('发送成功');
+                    $('#sendPostcard-a').css('background-color', 'gray');
+                    a('发送成功')
+                    $('#sendPostcard-a').text('再发一个');
                 } else {
+                    $('#sendPostcard-a').text('发送');
                     a(req.msg)
                 }
             },
@@ -160,7 +179,7 @@ $(function(){
     });
 
     $('#wemade').click(function (e) { 
-        a("这个东西是无聊的xt做的。\n感谢js兄弟的帮助，js兄弟会找到对象的。\n\n2020.02.14")
+        a("这个东西是无聊且不用过情人节的xt做的。\n感谢js兄弟的帮助，js兄弟会找到对象的。\n感谢朋友们帮我测试。\n\n2020.02.14")
     });
     textScreen()
     $(window).resize(function(){

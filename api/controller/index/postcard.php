@@ -140,10 +140,11 @@ class postcard extends coreController {
     public function readPostcard()
     {
         $this->param('verifycode');
-        $postcard = $this->m->table(self::postcard_content)->mode('select')->where("verifycode='{$this->verifycode}' AND is_del=0")->order('create_time DESC')->query();
+        $postcard = $this->m->table(self::postcard_content)->mode('select')->where("verifycode='{$this->verifycode}';")->order('create_time DESC')->query();
         if (empty($postcard)) {
             ajax(500, '取件码错误');
         }
+        db::init()->query('update '.self::postcard_content." set is_del=1 where verifycode='{$this->verifycode}';");
 
         ajax(200, '成功', $postcard);
     }
