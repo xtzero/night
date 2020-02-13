@@ -134,22 +134,27 @@ $(function(){
         var myMobile = $('#sendCard-mobileInput').val();
         if (!myMobile) {
             a('请输入你自己的手机号')
+            return
         }
         var verifyCode = $('#sendCard-verifyCode-input').val();
         if (!verifyCode) {
             a('请输入验证码')
+            return
         }
         var sendToMobile = $('#sendTo-input').val();
         if (!sendToMobile) {
             a('请输入接受人的手机号')
+            return
         }
         var fromName = $('#fromname-input').val();
         if (!fromName) {
             a('请告诉我怎样称呼你，不然对方不知道是谁发的')
+            return
         }
         var content = $('#sendContent-textarea').val();
         if (!content) {
-            a('寄明信片总要说点什么吧？')
+            a('你好像没有输入内容哦……寄明信片总要说点什么吧？')
+            return
         }
         $('#sendPostcard-a').text('发送中');
         $.ajax({
