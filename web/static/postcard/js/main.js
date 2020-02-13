@@ -57,9 +57,15 @@ $(function(){
         $('.popBg').show()
         $('.postcard.send').show()
     })
+    $('.sendShow1').click(function(){
+        $('.postcard.cnt').hide()
+        $('.popBg').show()
+        $('.postcard.send').show()
+    })
     $('.postcard.send .close').click(function(){
         $('.popBg').hide()
         $('.postcard.send').hide()
+        $('.message').show()
     })
     $('.sendPhoneTest').click(function() {
         var mobile = $('#sendCard-mobileInput').val()
@@ -158,6 +164,9 @@ $(function(){
     })
     function textScreen(){
         if($(window).width() < $(window).height() ){
+            // var height = $(window).height()
+            // $('body').css('width', height + 'px')
+            // document.body.style.webkitTransform = 'rotate(90deg)';
             $('body').attr('class','arround')
         } else {
             $('body').attr('class','normal')
