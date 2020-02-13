@@ -85,7 +85,7 @@ body.arround .phoneAround{ color:#fff; font-size:20px; text-align: center;}
     .postcard .content .text textarea{ height:100px;}
     .sendButton{ color:white;background-color: #f189a2;font-size:12px;border-color: rgba(0,0,0,0);}
     .content{color: #f189a2;}
-    .around-tip{font-size: 12px;}
+    .around-tip{font-size: 10px;}
 }
 
 #wemade{
