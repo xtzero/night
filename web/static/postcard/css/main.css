@@ -87,3 +87,15 @@ body.arround .phoneAround{ color:#fff; font-size:20px; text-align: center;}
     .content{color: #f189a2;}
     .around-tip{font-size: 12px;}
 }
+
+#wemade{
+    color: #f189a2;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 10px;
+    /* color: white; */
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-weight: bold;
+}

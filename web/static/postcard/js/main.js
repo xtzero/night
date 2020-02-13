@@ -158,6 +158,10 @@ $(function(){
             }
         })
     });
+
+    $('#wemade').click(function (e) { 
+        a("这个东西是无聊的xt做的。\n感谢js兄弟的帮助，js兄弟会找到对象的。\n\n2020.02.14")
+    });
     textScreen()
     $(window).resize(function(){
         textScreen()
