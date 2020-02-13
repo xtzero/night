@@ -123,6 +123,7 @@ $(function(){
             $('#sendPostcard-a').hide()
             $('.sendPhoneTest').text('发送验证码')
             $('.sendPhoneTest').css('background-color', '#f189a2');
+            $('#sendPostcard-a').css('background-color', '#f189a2');
             $('#sendPostcard-a').text('发送')
             return
         }
