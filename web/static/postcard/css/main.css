@@ -81,7 +81,7 @@ body.arround .phoneAround{ color:#fff; font-size:20px; text-align: center;}
     .postcard .content .phoneTest{font-size:14px;    margin-top: 5px;}
     .sendPhoneTest{ font-size:13px;color:white;background-color: #f189a2;border-color: rgba(0,0,0,0);}
     /* 手机号和验证码的输入框 */
-    .postcard .content .phoneTest input{ font-size:12px;width:150px;border-color: #f189a2;}
+    .postcard .content .phoneTest input{ font-size:12px;width:150px;border-color: #f189a2;color: black;}
     .postcard .content .text textarea{ height:100px;}
     .sendButton{ color:white;background-color: #f189a2;font-size:12px;border-color: rgba(0,0,0,0);}
     .content{color: #f189a2;}
