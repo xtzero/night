@@ -29,9 +29,9 @@ class postcard extends coreController {
         $ifSended = $this->m->table(self::postcard_code)->mode('select')->where("mobile='{$this->mobile}' AND valid=1")->order('create_time DESC')->query();
         if (
             !empty($ifSended) && 
-            (time() - (int)strtotime($ifSended[0]['create_time']) < 600)
+            (time() - (int)strtotime($ifSended[0]['create_time']) < 60)
         ) {
-            ajax(400, '十分钟内只能获取一次', []);
+            ajax(400, '1分钟内只能获取一次', []);
         }
 
         // 开始发送短信
