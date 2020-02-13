@@ -76,6 +76,8 @@ class postcard extends coreController {
         if (empty($verifyCode)) {
             ajax(400, '验证码不正确', []);
         } else {
+            // 将验证码失效
+            db::init()->query("update ".self::postcard_code." set valid=0 where mobile='{$this->mobile}';");
             // 取件码
             $verifycode = rand(100000, 999999);
             // 发短信
